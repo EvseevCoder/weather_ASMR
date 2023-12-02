@@ -62,8 +62,12 @@ function dataPlus(number) {
 }
 
 function fetchWeatherData(location) {
-    const apiURL = `http://api.weatherapi.com/v1/forecast.json?key=${API_key}&q=${location}&days=5&aqi=no&alerts=no`
-    fetch(apiURL).then(response => response.json()).then(
+    const apiURL = `https://api.weatherapi.com/v1/forecast.json?key=${API_key}&q=${location}&days=5&aqi=no&alerts=no`
+    fetch(apiURL, {
+        headers: {
+            'Access-Control-Allow-Origin': "*"
+        }
+    }).then(response => response.json()).then(
         data => {
             todayInfo.querySelector('h2').textContent = new Date().toLocaleDateString('en', { weekday: 'long' })
             todayInfo.querySelector('span').textContent = new Date().toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -120,7 +124,7 @@ function fetchWeatherData(location) {
             for (let index = 0; index < nextDays.length; index++) {
                 icon = nextDays[index].querySelector('img')
 
-                icon.src = data.forecast.forecastday[index+1].day.condition.icon
+                icon.src = data.forecast.forecastday[index + 1].day.condition.icon
             }
         }
     )
