@@ -60,6 +60,7 @@ body {
     display: flex;
     flex-direction: column;
     margin-top: 25px;
+    width: 150px;
 }
 
 .today-weather {
@@ -188,7 +189,7 @@ body {
 
 @media (max-width: 670px) {
     .container {
-        height: 720px;
+        height: 800px;
         display: flex;
         flex-direction: column;
         align-items: center;

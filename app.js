@@ -98,7 +98,10 @@ function fetchWeatherData(location) {
     )
 }
 
-fetchWeatherData('Bryansk')
+let city = 'Bryansk'
+
+fetchWeatherData(city)
+
 
 let button = document.querySelector('.loc-button')
 button.onclick = function () {
@@ -106,7 +109,6 @@ button.onclick = function () {
     if (city.trim() != '') {
         fetchWeatherData(city)
     }
-
 }
 
 // актуальный язык
@@ -162,43 +164,73 @@ function makeRu() {
     nowDay = document.querySelector('.today-info h2')
     nowDay.textContent = weekRu2[nowDay.textContent]
 
+    TranslateStatusRus()
 }
 
-
 function makeEn() {
-    button.textContent = 'Search location'
-    dayInfo = document.querySelector('.day-info').querySelectorAll('.title')
+    // button.textContent = 'Search location'
+    // dayInfo = document.querySelector('.day-info').querySelectorAll('.title')
     
     dayInfo[0].textContent = 'PRECIPATION'
     dayInfo[1].textContent = 'HUMIDITY'
     dayInfo[2].textContent = 'WIND SPEED'
 
-    const weekRu = {
-        'Пн': 'Mon',
-        'Вт': 'Tue',
-        'Ср': 'Wed',
-        'Чт': 'Thu',
-        'Пт': 'Fri',
-        'Сб': 'Sut',
-        'Вс': 'Sun',
-    }
+    // const weekRu = {
+    //     'Пн': 'Mon',
+    //     'Вт': 'Tue',
+    //     'Ср': 'Wed',
+    //     'Чт': 'Thu',
+    //     'Пт': 'Fri',
+    //     'Сб': 'Sut',
+    //     'Вс': 'Sun',
+    // }
 
-    const weekRu2 = {
-        'Понедельник': 'Monday',
-        'Втоник': 'Tuesday',
-        'Среда': 'Wednesday',
-        'Четверг': 'Thursday',
-        'Пятница': 'Friday',
-        'Суббота': 'Saturday',
-        'Воскресенье': 'Sunday',
-    }
+    // const weekRu2 = {
+    //     'Понедельник': 'Monday',
+    //     'Втоник': 'Tuesday',
+    //     'Среда': 'Wednesday',
+    //     'Четверг': 'Thursday',
+    //     'Пятница': 'Friday',
+    //     'Суббота': 'Saturday',
+    //     'Воскресенье': 'Sunday',
+    // }
     
-    nextDays = document.querySelector('.days-list').querySelectorAll('.weekDay')
+    // nextDays = document.querySelector('.days-list').querySelectorAll('.weekDay')
 
-    for (const weekDay of nextDays) {
-        weekDay.textContent = weekRu[weekDay.textContent]
-    }
+    // for (const weekDay of nextDays) {
+    //     weekDay.textContent = weekRu[weekDay.textContent]
+    // }
 
-    nowDay = document.querySelector('.today-info h2')
-    nowDay.textContent = weekRu2[nowDay.textContent]
+    // nowDay = document.querySelector('.today-info h2')
+    // nowDay.textContent = weekRu2[nowDay.textContent]
+
+    fetchWeatherData(city)
+}
+
+
+function TranslateStatusRus() {
+    const apiURL = `https://www.weatherapi.com/docs/conditions.json`
+
+    fetch(apiURL).then(response => response.json()).then(
+        data => {
+            // status - описание актуальной погоды
+            let stasus = document.querySelector('.today-weather h3')
+            
+            for (const item of data) {
+                if (item.day == stasus.textContent) {
+                    for (const langCh of item.languages) {
+                        if (langCh.lang_name == 'Russian') {
+                            stasus.textContent = langCh.day_text
+                        }
+                    }  
+                } else if (item.night == stasus.textContent) {
+                    for (const langCh of item.languages) {
+                        if (langCh.lang_name == 'Russian') {
+                            stasus.textContent = langCh.night_text
+                        }
+                    }
+                }
+            }
+
+    })
 }
