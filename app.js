@@ -30,49 +30,17 @@ const weatherIconMap = {
 }
 
 
-function dataPlus(number) {
-    const date = new Date();
-    date.setHours(0, 0, 0, 0);
-
-    let tomorrow = date.getDate() + 1;
-
-    if (date.getMonth() == 11 && date.getDate() == 31) {
-        tomorrow = new Date().setDate(new Date().getDate() + 2);
-    } else {
-        tomorrow = date.getDate() + number
-    }
-    date.setDate(tomorrow);
-
-
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    day = date.getDate();
-
-    if (month < 10) {
-        month = '0' + month;
-    }
-
-
-    if (day < 10) {
-        day = '0' + day;
-    }
-
-    // нужен формат год-месяц-
-    return (`${year}-${month}-${day}`);
-}
-
 function fetchWeatherData(location) {
     const apiURL = `https://api.weatherapi.com/v1/forecast.json?key=${API_key}&q=${location}&days=5&aqi=no&alerts=no`
-    fetch(apiURL, {
+    const options = {
         headers: {
             'Access-Control-Allow-Origin': "*"
         }
-    }).then(response => response.json()).then(
+    }
+    fetch(apiURL, options).then(response => response.json()).then(
         data => {
             todayInfo.querySelector('h2').textContent = new Date().toLocaleDateString('en', { weekday: 'long' })
             todayInfo.querySelector('span').textContent = new Date().toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
-
-            // todayWeatherIcon - сделать свою иконку
 
             todayTemp.textContent = data.current.temp_c
 
@@ -82,7 +50,7 @@ function fetchWeatherData(location) {
             const weatherDescElement = document.querySelector('.today-weather > h3')
             weatherDescElement.textContent = data.current.condition.text
 
-            precipation = data.current.precip_mm * 100 + " %"
+            precipation = Math.round(data.current.precip_mm * 100) + " %"
             humidity = data.current.humidity + " %"
             windSpeed = data.current.wind_kph + " km/h"
 
@@ -135,8 +103,102 @@ fetchWeatherData('Bryansk')
 let button = document.querySelector('.loc-button')
 button.onclick = function () {
     city = prompt('Введите Данные своего города')
-    if (city != '') {
+    if (city.trim() != '') {
         fetchWeatherData(city)
     }
 
+}
+
+// актуальный язык
+let lang = 'en'
+
+const langButton = document.querySelector('.lang-button')
+langButton.onclick = function () {
+    if (lang == 'en') {
+        lang = 'ru'
+        makeRu()
+        console.log(lang);
+    } else if (lang == 'ru') {
+        lang = 'en'
+        makeEn()
+        console.log(lang);
+    }
+}
+
+function makeRu() {
+    button.textContent = 'Выбор города'
+    dayInfo = document.querySelector('.day-info').querySelectorAll('.title')
+    
+    dayInfo[0].textContent = 'Вероятность осадков'
+    dayInfo[1].textContent = 'Влажность'
+    dayInfo[2].textContent = 'Скорость ветра'
+
+    const weekRu = {
+        'Mon': 'Пн',
+        'Tue': 'Вт',
+        'Wed': 'Ср',
+        'Thu': 'Чт',
+        'Fri': 'Пт',
+        'Sut': 'Сб',
+        'Sun': 'Вс',
+    }
+
+    const weekRu2 = {
+        'Monday': 'Понедельник',
+        'Tuesday': 'Вторник',
+        'Wednesday': 'Среда',
+        'Thursday': 'Четверг',
+        'Friday': 'Пятница',
+        'Saturday': 'Суббота',
+        'Sunday': 'Воскресенье',
+    }
+    
+    nextDays = document.querySelector('.days-list').querySelectorAll('.weekDay')
+
+    for (const weekDay of nextDays) {
+        weekDay.textContent = weekRu[weekDay.textContent]
+    }
+
+    nowDay = document.querySelector('.today-info h2')
+    nowDay.textContent = weekRu2[nowDay.textContent]
+
+}
+
+
+function makeEn() {
+    button.textContent = 'Search location'
+    dayInfo = document.querySelector('.day-info').querySelectorAll('.title')
+    
+    dayInfo[0].textContent = 'PRECIPATION'
+    dayInfo[1].textContent = 'HUMIDITY'
+    dayInfo[2].textContent = 'WIND SPEED'
+
+    const weekRu = {
+        'Пн': 'Mon',
+        'Вт': 'Tue',
+        'Ср': 'Wed',
+        'Чт': 'Thu',
+        'Пт': 'Fri',
+        'Сб': 'Sut',
+        'Вс': 'Sun',
+    }
+
+    const weekRu2 = {
+        'Понедельник': 'Monday',
+        'Втоник': 'Tuesday',
+        'Среда': 'Wednesday',
+        'Четверг': 'Thursday',
+        'Пятница': 'Friday',
+        'Суббота': 'Saturday',
+        'Воскресенье': 'Sunday',
+    }
+    
+    nextDays = document.querySelector('.days-list').querySelectorAll('.weekDay')
+
+    for (const weekDay of nextDays) {
+        weekDay.textContent = weekRu[weekDay.textContent]
+    }
+
+    nowDay = document.querySelector('.today-info h2')
+    nowDay.textContent = weekRu2[nowDay.textContent]
 }
