@@ -141,7 +141,7 @@ function makeRu() {
         'Wed': 'Ср',
         'Thu': 'Чт',
         'Fri': 'Пт',
-        'Sut': 'Сб',
+        'Sat': 'Сб',
         'Sun': 'Вс',
     }
 
