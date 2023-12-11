@@ -39,6 +39,8 @@ function fetchWeatherData(location) {
     }
     fetch(apiURL, options).then(response => response.json()).then(
         data => {
+            console.log(data);
+
             todayInfo.querySelector('h2').textContent = new Date().toLocaleDateString('en', { weekday: 'long' })
             todayInfo.querySelector('span').textContent = new Date().toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
 
@@ -73,23 +75,29 @@ function fetchWeatherData(location) {
 
             next1[1].textContent = data.forecast.forecastday[1].day.avgtemp_c
             next2[1].textContent = data.forecast.forecastday[2].day.avgtemp_c
-            next3[1].textContent = data.forecast.forecastday[3].day.avgtemp_c
-            next4[1].textContent = data.forecast.forecastday[4].day.avgtemp_c
+
+            // Недоступно ((
+            // next3[1].textContent = data.forecast.forecastday[3].day.avgtemp_c
+            // next4[1].textContent = data.forecast.forecastday[4].day.avgtemp_c
 
 
             const day1 = new Date(data.forecast.forecastday[1].date)
             const day2 = new Date(data.forecast.forecastday[2].date)
-            const day3 = new Date(data.forecast.forecastday[3].date)
-            const day4 = new Date(data.forecast.forecastday[4].date)
+
+            // Недоступно
+            // const day3 = new Date(data.forecast.forecastday[3].date)
+            // const day4 = new Date(data.forecast.forecastday[4].date)
 
 
             next1[0].textContent = day1.toLocaleDateString('en', { weekday: 'short' });
             next2[0].textContent = day2.toLocaleDateString('en', { weekday: 'short' });
-            next3[0].textContent = day3.toLocaleDateString('en', { weekday: 'short' });
-            next4[0].textContent = day4.toLocaleDateString('en', { weekday: 'short' });
+
+            // Недоступно
+            // next3[0].textContent = day3.toLocaleDateString('en', { weekday: 'short' });
+            // next4[0].textContent = day4.toLocaleDateString('en', { weekday: 'short' });
 
 
-            for (let index = 0; index < nextDays.length; index++) {
+            for (let index = 0; index < 2; index++) {
                 icon = nextDays[index].querySelector('img')
 
                 icon.src = data.forecast.forecastday[index + 1].day.condition.icon
