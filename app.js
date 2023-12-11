@@ -39,8 +39,6 @@ function fetchWeatherData(location) {
     }
     fetch(apiURL, options).then(response => response.json()).then(
         data => {
-            console.log(data);
-
             todayInfo.querySelector('h2').textContent = new Date().toLocaleDateString('en', { weekday: 'long' })
             todayInfo.querySelector('span').textContent = new Date().toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' })
 
@@ -114,7 +112,7 @@ fetchWeatherData(city)
 let button = document.querySelector('.loc-button')
 button.onclick = function () {
     city = prompt('Введите Данные своего города')
-    if (city.trim() != '') {
+    if (String(city).trim() != '') {
         fetchWeatherData(city)
     }
 }
