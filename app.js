@@ -37,7 +37,7 @@ function fetchWeatherData(location) {
       "Access-Control-Allow-Origin": "*",
     },
   };
-  fetch(apiURL)
+  fetch(apiURL, "123")
     .then((response) => response.json())
     .then((data) => {
       todayInfo.querySelector("h2").textContent = new Date().toLocaleDateString(
